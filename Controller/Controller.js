@@ -1,12 +1,7 @@
 const mongoose = require('mongoose');
-// import mongoose from 'mongoose';
 const UserData =require('../Model/Model');
-// import UserData from "../Model/Model"
-// import bcrypt from "bcrypt";
 const bcrypt =require('bcrypt');
-// import jwt from "jsonwebtoken";
 const jwt = require('jsonwebtoken');
-// import isAuth from '../Middleware/isAuth';
 var isAuth=require('../Middleware/isAuth')
     
 
@@ -18,19 +13,19 @@ exports.getAllUsers = (req, res) =>{
   });
 };
 exports.signup = (req, res) =>{
-  const reg_email = /^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
+  const reg_email= /^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
   const reg_pwd = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
   if(!reg_pwd.test(req.body.password)){
     console.log(req.body.password)
     res.send('password is invalid');
   }
-  else{
-    if(req.body.password === req.body.Confirmpassword) {
+  // else{
+  //   if(req.body.password === req.body.Confirmpassword) {
 
-    }else{
-      res.send("password missmatch");
-    }
-  }
+  //   }else{
+  //     res.send("password missmatch");
+  //   }
+  // }
   if(reg_email.test(req.body.email)){
     UserData.find({email: req.body.email},function(err, data){
       if(data != null && data != ''){

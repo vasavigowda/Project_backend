@@ -8,8 +8,8 @@ module.exports = (app) => {
     app.route('/Signin')
     .post(todoList.userSignin,isAuth);
 
-    app.route('/Singup/:SingupId')
-    .get(todoList.getAllUsers)
+    app.route('/Signup')
+    .get(todoList.getAllUsers,isAuth)
     .put(todoList.updateUser)
     .delete(todoList.deleteUser);
     };

@@ -22,7 +22,6 @@ error.statusCode = 401;
 throw error;
 }
 
-
 req.userId = decodedToken.userId;
 console.log(decodedToken.userId);
 next();

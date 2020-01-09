@@ -1,11 +1,8 @@
 var express = require('express');
-// import express from 'express';
 var app = express();
  var port = process.env.PORT || 4000;
  var mongoose = require('mongoose');
-//  import mongoose from "mongoose";
  var Task = require('./Model/Model');
-//  import bodyParser from "body-parser";
  var bodyParser = require('body-parser');
   
 mongoose.Promise = global.Promise;
