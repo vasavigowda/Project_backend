@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const UserData =require('../Model/Model');
+const UserData =require('../Model/userModel');
 const bcrypt =require('bcrypt');
 const jwt = require('jsonwebtoken');
 var isAuth=require('../Middleware/isAuth')
@@ -13,12 +13,13 @@ exports.getAllUsers = (req, res) =>{
   });
 };
 exports.signup = (req, res) =>{
+  console.log(req.body)
   const reg_email= /^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
-  const reg_pwd = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
-  if(!reg_pwd.test(req.body.password)){
-    console.log(req.body.password)
-    res.send('password is invalid');
-  }
+  // const reg_pwd = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
+  // if(!reg_pwd.test(req.body.password)){
+  //   console.log(req.body.password)
+  //   res.send('password is invalid');
+  // }
   // else{
   //   if(req.body.password === req.body.Confirmpassword) {
 

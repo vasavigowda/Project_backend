@@ -2,16 +2,18 @@ var express = require('express');
 var app = express();
  var port = process.env.PORT || 4000;
  var mongoose = require('mongoose');
- var Task = require('./Model/Model');
+ var Task = require('./Model/userModel');
  var bodyParser = require('body-parser');
+ var cors = require('cors')
   
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/Signup'); 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors())
 
-var routes = require('./Router/Router');
+var routes = require('./Router/userRouter');
 routes(app); 
 
 app.use((error,req,res,next)=>{

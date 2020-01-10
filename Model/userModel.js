@@ -1,11 +1,9 @@
 var mongoose = require('mongoose');
-// import mongoose from 'mongoose';
-// import Schema from 'mongoose.Schema'
 var Schema = mongoose.Schema;
 
 
 var TaskSchema = new Schema({
- Firstname: {
+ firstname: {
     type: String,
     required: true
 },
