@@ -1,6 +1,6 @@
 module.exports = (app) => {
 const userController = require('../Controller/userController');
-const desktop = require('../Controller/questionController');
+const Question = require('../Controller/questionController');
 const isAuth=require('../Middleware/isAuth')
 
  app.route('/Signup')
@@ -10,9 +10,9 @@ const isAuth=require('../Middleware/isAuth')
   .post(userController.userSignin,isAuth);
 
 
-  app.route('/Desktop')
-.get(desktop.get_a_data)
-.post(desktop.update_a_task)
+  app.route('/question')
+.get(Question.get_a_data)
+.post(Question.update_a_task)
   
     // app.route('/Signup')
     // .get(todoList.getAllUsers)
