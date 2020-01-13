@@ -1,6 +1,7 @@
 module.exports = (app) => {
 const userController = require('../Controller/userController');
 const Question = require('../Controller/questionController');
+const postAnswer = require('../Controller/answerController');
 const isAuth=require('../Middleware/isAuth')
 
  app.route('/Signup')
@@ -12,10 +13,19 @@ const isAuth=require('../Middleware/isAuth')
 
   app.route('/question')
 .get(Question.get_a_data)
-.post(Question.update_a_task)
-  
-    // app.route('/Signup')
-    // .get(todoList.getAllUsers)
-    // .put(todoList.updateUser)
-    // .delete(todoList.deleteUser);
+.post(Question.postquestion)
+
+app.route('/question/:id')
+.delete(Question.delete_a_task)
+.put(Question.update_a_task)
+
+
+app.route('/answer')
+.get(postAnswer.getdata)
+.post(postAnswer.postanswer)
+
+app.route('/answer/:id')
+
+.put(postAnswer.updatetask)
+
     };
