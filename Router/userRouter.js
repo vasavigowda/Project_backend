@@ -20,12 +20,13 @@ app.route('/question/:id')
 .put(Question.update_a_task)
 
 
-app.route('/answer')
-.get(postAnswer.getdata)
+app.route('/postanswer')
 .post(postAnswer.postanswer)
 
-app.route('/answer/:id')
+app.route('/getanswer')
+.get(postAnswer.getdata)
 
-.put(postAnswer.updatetask)
+// app.route('/answer/:id')
+// .put(postAnswer.updatetask)
 
     };

@@ -5,6 +5,7 @@ var isAuth=require('../Middleware/isAuth')
 const Answerpost= require('../Model/answerModel')
 
 exports.getdata = function(req, res) {
+    console.log("get")
     Answerpost.find({}, function(err, data) {
     if (err)
     res.send(err);
@@ -13,6 +14,7 @@ exports.getdata = function(req, res) {
     };
     
     exports.postanswer = function(req, res) {
+        console.log(req.body.pay);
         var User = new Answerpost(req.body);
         User.save({},function(err, data) {
             if (err)
@@ -21,7 +23,6 @@ exports.getdata = function(req, res) {
         });
         };
         exports.updatetask=(req, res)=>{
-            console.log("update")
             Answerpost.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (error, data) => {
                 if (error) { res.send(error); }
                 res.json(data)

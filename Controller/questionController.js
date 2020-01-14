@@ -29,7 +29,7 @@ exports.update_a_task=(req, res)=>{
     })
   }
 exports.delete_a_task = function(req, res) {
-UserData.remove({_id: req.params.id}, function(err, data) {
+UserData.deleteOne({_id: req.params.id}, function(err, data) {
 if (err)
 res.send(err);
 res.json({ message: 'Task successfully deleted' });

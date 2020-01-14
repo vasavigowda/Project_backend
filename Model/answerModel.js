@@ -6,10 +6,11 @@ var TaskSchema1 = new Schema({
 post: {
 type: String
 },
-post1:{
-    type:String,
-    // default:""
+question_id:{
+    type:String
 }
+
+
 });
 
-module.exports = mongoose.model('answerpost', TaskSchema1);
+module.exports = mongoose.model('answer',TaskSchema1);
