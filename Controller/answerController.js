@@ -14,7 +14,7 @@ exports.getdata = function(req, res) {
     };
     
     exports.postanswer = function(req, res) {
-        console.log(req.body.pay);
+        console.log(req.body);
         var User = new Answerpost(req.body);
         User.save({},function(err, data) {
             if (err)

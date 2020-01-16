@@ -13,4 +13,4 @@ question_id:{
 
 });
 
-module.exports = mongoose.model('answer',TaskSchema1);
+module.exports = mongoose.model('postanswers',TaskSchema1);

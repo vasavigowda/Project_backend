@@ -74,7 +74,7 @@ exports.userSignin = (req,res,next) =>{
   UserData.findOne({email: email})
   .then(user =>{
     if(!user){
-      const error = new Error('A user with this email number could not be found.');
+      const error = new Error('User does not exist');
       error.statusCode = 401;
       throw error;
     }
