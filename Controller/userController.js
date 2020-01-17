@@ -3,6 +3,7 @@ const UserData =require('../Model/userModel');
 const bcrypt =require('bcrypt');
 const jwt = require('jsonwebtoken');
 var isAuth=require('../Middleware/isAuth')
+var nodemailer=require("nodemailer");
     
 
 exports.getAllUsers = (req, res) =>{
@@ -52,8 +53,8 @@ exports.signup = (req, res) =>{
     res.send('Email is invalid');
   }
 };
-exports.updateUser = (req, res)=> {
-  UserData.findOneAndUpdate({_id: req.params.taskId}, req.body, {new: true}, function(err, task) {
+exports.changepassword = (req, res)=> {
+  UserData.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, function(err, task) {
   if (err)
   res.send(err);
   res.json(task);
@@ -87,6 +88,30 @@ exports.userSignin = (req,res,next) =>{
       error.statusCode = 401;
       throw error;
     }
+    var transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      
+      auth: {
+      user: 'vbalashankarostb2@gmail.com',
+      pass: 'vasavi@1997'
+      }
+      });
+      mailOptions = {
+      from: 'vbalashankarostb2@gmail.com',
+      to: req.body.email,
+      subject: 'requesting to complete project',
+      text: `your password is `+password+ `http://localhost:3000/forgetpasswordpage `
+      };
+      transporter.sendMail(mailOptions, (error, info)=>{
+      if (error) {
+      return console.log(error.message);
+      } else {
+      console.log('Email sent: ' + info.response);
+      }
+      });
     const token = jwt.sign(
     {
       email: loadedUser.email,

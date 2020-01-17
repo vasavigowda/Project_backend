@@ -7,9 +7,13 @@ const isAuth=require('../Middleware/isAuth')
  app.route('/Signup')
  .post(userController.signup);
 
-  app.route('/Signin')
-  .post(userController.userSignin,isAuth);
 
+  app.route('/Signin')
+  .post(userController.userSignin,isAuth)
+  .get(userController.getAllUsers)
+
+  app.route('/signin/:id')
+  .put(userController.changepassword)
 
   app.route('/question')
 .get(Question.get_a_data)
