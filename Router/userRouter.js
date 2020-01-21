@@ -2,6 +2,7 @@ module.exports = (app) => {
 const userController = require('../Controller/userController');
 const Question = require('../Controller/questionController');
 const postAnswer = require('../Controller/answerController');
+const userCtrl =require('../Controller/ResetController');
 const isAuth=require('../Middleware/isAuth')
 
  app.route('/Signup')
@@ -23,14 +24,13 @@ app.route('/question/:id')
 .delete(Question.delete_a_task)
 .put(Question.update_a_task)
 
-
 app.route('/postanswer')
 .post(postAnswer.postanswer)
 
 app.route('/getanswer')
 .get(postAnswer.getdata)
 
-// app.route('/answer/:id')
-// .put(postAnswer.updatetask)
+app.route('/forgotpasswordResponse')  
+.post(userCtrl.forgotpasswordResponse);
 
     };
