@@ -60,6 +60,7 @@ exports.changepassword = (req, res)=> {
   res.json(task);
   });
 };
+
 exports.deleteUser = (req, res) => {
   UserData.remove({_id: req.params.taskId}, function(err, task) {
   if (err)
@@ -129,7 +130,6 @@ exports.userSignin = (req,res,next) =>{
 
 exports.confirmmail = (req,res,next) =>{
   const email = req.body.email;
- 
   let loadedUser;
   UserData.findOne({email: email})
   .then(user =>{
@@ -169,9 +169,7 @@ exports.confirmmail = (req,res,next) =>{
       userId:loadedUser._id.toString()
     },'secret')
     return res.status(200).json({token: token, userId: loadedUser._id.toString(), email: loadedUser.email})
-  // }
 })
-  // )
   .catch(err => {
     if (!err.statusCode) {
       err.statusCode = 500;
