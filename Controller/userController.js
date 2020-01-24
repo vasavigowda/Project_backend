@@ -28,6 +28,7 @@ exports.signup = (req, res) =>{
   //     res.send("password missmatch");
   //   }
   // }
+  
   if(reg_email.test(req.body.email)){
     UserData.find({email: req.body.email},function(err, data){
       if(data != null && data != ''){
@@ -36,16 +37,16 @@ exports.signup = (req, res) =>{
       else
       {
         var userData = new UserData(req.body);
-        bcrypt.genSalt(10, function(err, salt){
-          bcrypt.hash(userData.password, salt, function(err, hash) {
-            userData.password = hash;
+        // bcrypt.genSalt(10, function(err, salt){
+        //   bcrypt.hash(userData.password, salt, function(err, hash) {
+        //     userData.password = hash;
             userData.save(function(err, data){
               if(err)
                 res.send(err.message);
               res.json('User Created Succesfully');
             })
-          })
-        })
+          // })
+        // })
       }
     });
   }
@@ -53,8 +54,28 @@ exports.signup = (req, res) =>{
     res.send('Email is invalid');
   }
 };
+exports.updateAppointment= function(req,res) {
+  console.log(req.params.id)
+  selectdoctor.findById(req.params.id, function(err,data){
+    if(!data)
+      res.status(404).send("data is not found");
+    else{
+      data.department=req.body.department;
+      data.date=req.body.date;
+      data.patient=req.body.patient;
+      data.doctor=req.body.doctor;
+      data.save().then(data => {
+        res.json(data);
+      })
+      .catch(err => {
+        res.status(400).send("unable to update the database")
+      })
+    }
+  })
+};
 exports.changepassword = (req, res)=> {
-  UserData.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, function(err, task) {
+  console.log(req.body)
+  UserData.findOneAndUpdate({email: req.body.email}, req.body, {new: true}, function(err, task) {
   if (err)
   res.send(err);
   res.json(task);
@@ -81,7 +102,7 @@ exports.userSignin = (req,res,next) =>{
       throw error;
     }
     loadedUser = user;
-    return bcrypt.compare(password,user.password);
+    return compare(password,user.password);
   })
   .then(isEqual =>{
     if(!isEqual){
@@ -178,6 +199,59 @@ exports.confirmmail = (req,res,next) =>{
   }); 
 }
 
+exports.module =app=>{
+  UserData.get({email: email})
+  .then(user =>{
+    if(!user){
+      console.log('user exists');
+      bcrypt
+      .hash(req.body.password,BCRYPT_SALT_ROUNDS)
+      then(hashedpassword=>{
+        user.update({
+          password:hashedpassword,
+          resetpasswordToken:null,
+          resetpasswordExpires:null
+        })
+      })
+     .then(()=>{
+       console.log("pasword.updated")
+       res.status(200).send({message:'password updated'});
+     })
+    }
+     else{
+       console.log('no user exists ')
+       res.status(404).json('no user exists');
+
+     }
+});
+  };
+
+exports.module =app=>{
+  UserData.findOne({email: email})
+  .then(user =>{
+    if(!user){
+      console.log('user exists');
+      bcrypt
+      .hash(req.body.password,BCRYPT_SALT_ROUNDS)
+      then(hashedpassword=>{
+        user.update({
+          password:hashedpassword,
+          resetpasswordToken:null,
+          resetpasswordExpires:null
+        })
+      })
+     .then(()=>{
+       console.log("pasword.updated")
+       res.status(200).send({message:'password updated'});
+     })
+    }
+     else{
+       console.log('no user exists ')
+       res.status(404).json('no user exists');
+
+     }
+});
+  };
 
 
 

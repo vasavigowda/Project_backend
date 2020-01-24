@@ -17,7 +17,7 @@ const isAuth=require('../Middleware/isAuth')
   .post(userController.confirmmail,isAuth)
 
 
-  app.route('/reset/:id')
+  app.route('/reset')
   .put(userController.changepassword)
 
   app.route('/question')
