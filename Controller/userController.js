@@ -16,19 +16,6 @@ exports.getAllUsers = (req, res) =>{
 exports.signup = (req, res) =>{
   console.log(req.body)
   const reg_email= /^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
-  // const reg_pwd = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/;
-  // if(!reg_pwd.test(req.body.password)){
-  //   console.log(req.body.password)
-  //   res.send('password is invalid');
-  // }
-  // else{
-  //   if(req.body.password === req.body.Confirmpassword) {
-
-  //   }else{
-  //     res.send("password missmatch");
-  //   }
-  // }
-  
   if(reg_email.test(req.body.email)){
     UserData.find({email: req.body.email},function(err, data){
       if(data != null && data != ''){
@@ -53,25 +40,6 @@ exports.signup = (req, res) =>{
   else {
     res.send('Email is invalid');
   }
-};
-exports.updateAppointment= function(req,res) {
-  console.log(req.params.id)
-  selectdoctor.findById(req.params.id, function(err,data){
-    if(!data)
-      res.status(404).send("data is not found");
-    else{
-      data.department=req.body.department;
-      data.date=req.body.date;
-      data.patient=req.body.patient;
-      data.doctor=req.body.doctor;
-      data.save().then(data => {
-        res.json(data);
-      })
-      .catch(err => {
-        res.status(400).send("unable to update the database")
-      })
-    }
-  })
 };
 exports.changepassword = (req, res)=> {
   console.log(req.body)
@@ -102,7 +70,7 @@ exports.userSignin = (req,res,next) =>{
       throw error;
     }
     loadedUser = user;
-    return compare(password,user.password);
+    return (password===user.password?true:false)
   })
   .then(isEqual =>{
     if(!isEqual){
@@ -149,109 +117,7 @@ exports.userSignin = (req,res,next) =>{
   }); 
 }
 
-exports.confirmmail = (req,res,next) =>{
-  const email = req.body.email;
-  let loadedUser;
-  UserData.findOne({email: email})
-  .then(user =>{
-    if(!user){
-      const error = new Error('User does not exist');
-      error.statusCode = 401;
-      throw error;
-    }
-    loadedUser = user;
-    var transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      requireTLS: true,
-      
-      auth: {
-      user: 'vbalashankarostb2@gmail.com',
-      pass: 'vasavi@1997'
-      }
-      });
-      mailOptions = {
-      from: 'vbalashankarostb2@gmail.com',
-      to: req.body.email,
-      subject: 'reset password',
-      text: `your password is `+ `http://localhost:3000/forgetpasswordpage `
-      };
-      transporter.sendMail(mailOptions, (error, info)=>{
-      if (error) {
-      return console.log(error.message);
-      } else {
-      console.log('Email sent: ' + info.response);
-      }
-      });
-    const token = jwt.sign(
-    {
-      email: loadedUser.email,
-      userId:loadedUser._id.toString()
-    },'secret')
-    return res.status(200).json({token: token, userId: loadedUser._id.toString(), email: loadedUser.email})
-})
-  .catch(err => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }); 
-}
 
-exports.module =app=>{
-  UserData.get({email: email})
-  .then(user =>{
-    if(!user){
-      console.log('user exists');
-      bcrypt
-      .hash(req.body.password,BCRYPT_SALT_ROUNDS)
-      then(hashedpassword=>{
-        user.update({
-          password:hashedpassword,
-          resetpasswordToken:null,
-          resetpasswordExpires:null
-        })
-      })
-     .then(()=>{
-       console.log("pasword.updated")
-       res.status(200).send({message:'password updated'});
-     })
-    }
-     else{
-       console.log('no user exists ')
-       res.status(404).json('no user exists');
-
-     }
-});
-  };
-
-exports.module =app=>{
-  UserData.findOne({email: email})
-  .then(user =>{
-    if(!user){
-      console.log('user exists');
-      bcrypt
-      .hash(req.body.password,BCRYPT_SALT_ROUNDS)
-      then(hashedpassword=>{
-        user.update({
-          password:hashedpassword,
-          resetpasswordToken:null,
-          resetpasswordExpires:null
-        })
-      })
-     .then(()=>{
-       console.log("pasword.updated")
-       res.status(200).send({message:'password updated'});
-     })
-    }
-     else{
-       console.log('no user exists ')
-       res.status(404).json('no user exists');
-
-     }
-});
-  };
 
 
 
