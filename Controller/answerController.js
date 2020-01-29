@@ -5,7 +5,6 @@ var isAuth=require('../Middleware/isAuth')
 const Answerpost= require('../Model/answerModel')
 
 exports.getdata = function(req, res) {
-    console.log("get")
     Answerpost.find({}, function(err, data) {
     if (err)
     res.send(err);

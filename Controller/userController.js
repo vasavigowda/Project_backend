@@ -4,6 +4,8 @@ const bcrypt =require('bcrypt');
 const jwt = require('jsonwebtoken');
 var isAuth=require('../Middleware/isAuth')
 var nodemailer=require("nodemailer");
+const Cryptr = require('cryptr');
+const cryptr = new Cryptr('myTotalySecretKey');
     
 
 exports.getAllUsers = (req, res) =>{
@@ -26,14 +28,16 @@ exports.signup = (req, res) =>{
         var userData = new UserData(req.body);
         // bcrypt.genSalt(10, function(err, salt){
         //   bcrypt.hash(userData.password, salt, function(err, hash) {
-        //     userData.password = hash;
+         const p = cryptr.encrypt(userData.password);
+             userData.password = p;
+
             userData.save(function(err, data){
               if(err)
                 res.send(err.message);
               res.json('User Created Succesfully');
-            })
+            // })
           // })
-        // })
+        })
       }
     });
   }
@@ -43,11 +47,17 @@ exports.signup = (req, res) =>{
 };
 exports.changepassword = (req, res)=> {
   console.log(req.body)
-  UserData.findOneAndUpdate({email: req.body.email}, req.body, {new: true}, function(err, task) {
+  const pwd = cryptr.encrypt(req.body.password);
+  req.body.password = pwd;
+  UserData.findOneAndUpdate({email: req.body.email}, req.body, {new: true}, function(err, task)
+   {
   if (err)
   res.send(err);
   res.json(task);
-  });
+  }
+  );
+  
+  
 };
 
 exports.deleteUser = (req, res) => {
@@ -70,7 +80,10 @@ exports.userSignin = (req,res,next) =>{
       throw error;
     }
     loadedUser = user;
-    return (password===user.password?true:false)
+    const pwd = cryptr.decrypt(user.password)
+    return (password=== pwd);
+    // return (password===user.password?true:false)
+    // return bcrypt.compare(password,user.password);
   })
   .then(isEqual =>{
     if(!isEqual){
@@ -83,7 +96,6 @@ exports.userSignin = (req,res,next) =>{
       port: 587,
       secure: false,
       requireTLS: true,
-      
       auth: {
       user: 'vbalashankarostb2@gmail.com',
       pass: 'vasavi@1997'
@@ -92,8 +104,10 @@ exports.userSignin = (req,res,next) =>{
       mailOptions = {
       from: 'vbalashankarostb2@gmail.com',
       to: req.body.email,
-      subject: 'requesting to complete project',
-      text: `your password is `+password+ `http://localhost:3000/forgetpasswordpage `
+      subject: 'Login',
+       text: `you have successfully login `
+      // text: `your password is `+password+ `http://localhost:3000/forgetpasswordpage `
+
       };
       transporter.sendMail(mailOptions, (error, info)=>{
       if (error) {
