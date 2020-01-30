@@ -13,7 +13,6 @@ const isAuth=require('../Middleware/isAuth')
   .post(userController.userSignin,isAuth)
   .get(userController.getAllUsers)
 
-
   app.route('/reset')
   .put(userController.changepassword)
 
